@@ -3,80 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>鳳山據點辦理備忘錄</title>
+    <title>鳳山據點數位備忘錄</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --line-green: #00B900; --bg-gray: #f8f9fa; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg-gray); padding: 20px; color: #333; }
-        .card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h2 { color: #2c3e50; margin: 0 0 15px 0; font-size: 1.25rem; }
-        .info-row { margin-bottom: 12px; }
-        .label { font-weight: bold; color: #7f8c8d; font-size: 0.9rem; display: block; }
-        .content { font-size: 1.05rem; display: block; margin-top: 4px; }
-        .floor-alert { background: #fff5f5; color: #e74c3c; padding: 10px; border-radius: 8px; border-left: 5px solid #e74c3c; font-weight: bold; margin: 15px 0; }
-        
-        /* 導航按鈕樣式 */
-        .map-btn { 
-            display: inline-flex; align-items: center; justify-content: center;
-            background: #4285F4; color: white; text-decoration: none;
-            padding: 12px 20px; border-radius: 8px; width: 100%; box-sizing: border-box;
-            font-weight: bold; margin-top: 10px;
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        
-        /* LINE 分享按鈕樣式 */
-        .share-btn { 
-            display: block; width: 100%; background: var(--line-green); color: white;
-            text-align: center; padding: 18px; border-radius: 12px;
-            font-size: 1.1rem; font-weight: bold; border: none; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,185,0,0.3);
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
+        h1 {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        /* 服務人員標籤樣式 */
+        #staff-container {
+            display: none; /* 預設隱藏，有參數才顯示 */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .staff-tag {
+            background-color: #e8f4fd;
+            color: #2980b9;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 1px solid #d0e4f5;
+            display: inline-block;
+        }
+        .info-box {
+            background: #fff9db;
+            padding: 15px;
+            border-left: 5px solid #fcc419;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: transform 0.1s;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-map { background-color: #4285f4; color: white; }
+        .btn-line { background-color: #06c755; color: white; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h2>高雄市北區輔具資源中心<br>鳳山據點</h2>
-        
-        <div class="info-row">
-            <span class="label">地址</span>
-            <span class="content">鳳山區光復路二段120號</span>
-            <a href="https://www.google.com/maps/dir/?api=1&destination=高雄市鳳山區光復路二段120號" class="map-btn">
-                📍 開啟地圖導航
-            </a>
-        </div>
+<div class="container">
+    <h1 id="header-title">高雄市北區輔具資源中心<br>鳳山據點</h1>
 
-        <div class="floor-alert">
-            💡 抵達後請搭電梯至「3 樓」辦理
-        </div>
-
-        <div class="info-row">
-            <span class="label">應備文件 (共 8 項)</span>
-            <span class="content">
-                1. 公文 / 2. 印章 / 3. 身分證<br>
-                4. 聽障證明 / 5. 調整報告 / 6. 保固書<br>
-                7. 發票 / 8. 助聽器
-            </span>
-        </div>
+    <div id="staff-container">
+        <span class="staff-tag">👤 專屬服務：<span id="staff-name"></span></span>
     </div>
 
-    <button class="share-btn" onclick="sendShare()">將備忘傳送到我的 LINE</button>
+    <div class="info-box">
+        📍 <b>據點地址：</b>高雄市鳳山區光復路二段120號<br>
+        🏢 <b>樓層提醒：</b>請務必至 <b>3 樓</b> 辦理
+    </div>
 
-    <script>
-        function sendShare() {
-            // 自動獲取當前網頁網址，方便客戶點回
-            const currentUrl = window.location.href;
-            
-            const message = 
-                "【鳳山據點辦理備忘】\n" +
-                "📍 實際地點：鳳山區光復路二段120號3樓\n" +
-                "📦 應備文件：公文、印章、身分證、聽障證明、助聽器、調整報告、保固書、發票。\n\n" +
-                "🔗 詳細資訊與導航請點此：\n" +
-                currentUrl;
+    <div style="margin-bottom: 20px;">
+        <b>📋 攜帶文件清單：</b>
+        <ul style="padding-left: 20px; color: #444;">
+            <li>公文、印章、身分證</li>
+            <li>聽障證明、調整報告</li>
+            <li>保固書、發票、助聽器</li>
+        </ul>
+    </div>
 
-            // 使用 URL Scheme 分享
-            const lineUrl = "https://line.me/R/share?text=" + encodeURIComponent(message);
-            window.location.href = lineUrl;
-        }
-    </script>
+    <a href="https://www.google.com/maps/search/?api=1&query=高雄市鳳山區光復路二段120號3樓" class="btn btn-map">🗺️ 開啟地圖導航</a>
+    
+    <a href="javascript:void(0);" onclick="shareToLine()" class="btn btn-line">分享資訊到我的 LINE</a>
+</div>
+
+<script>
+    // 1. 取得網址參數中的服務人員姓名
+    const urlParams = new URLSearchParams(window.location.search);
+    const staff = urlParams.get('staff'); 
+
+    // 2. 如果有設定 staff 參數，則顯示標籤並更新內容
+    if (staff) {
+        // 使用 decodeURIComponent 確保中文顯示正常 [cite: 6, 11]
+        const decodedStaff = decodeURIComponent(staff);
+        document.getElementById('staff-container').style.display = 'block';
+        document.getElementById('staff-name').innerText = decodedStaff;
+    }
+
+    // 3. LINE 分享邏輯 [cite: 5, 11]
+    function shareToLine() {
+        const staffPrefix = staff ? `【${decodeURIComponent(staff)} 竭誠為您服務】\n` : "";
+        const shareText = `${staffPrefix}您好，這是鳳山據點的服務資訊與攜帶清單，請參考：\n${window.location.href}`;
+        
+        // 使用 LINE URL Scheme 進行分享 
+        const lineUrl = `https://line.me/R/share?text=${encodeURIComponent(shareText)}`;
+        window.location.href = lineUrl;
+    }
+</script>
 
 </body>
 </html>
