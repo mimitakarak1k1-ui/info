@@ -95,7 +95,7 @@
         </ul>
     </div>
 
-    <a href="https://www.google.com/maps/search/?api=1&query=高雄市鳳山區光復路二段120號1樓" class="btn btn-map">🗺️ 開啟地圖導航</a>
+    <a href="https://www.google.com/maps/search/?api=1&query=高雄市鳳山區光復路二段120號3樓" class="btn btn-map">🗺️ 開啟地圖導航</a>
     
     <a href="javascript:void(0);" onclick="shareToLine()" class="btn btn-line">分享資訊到我的 LINE</a>
 </div>
@@ -107,19 +107,29 @@
 
     // 2. 如果有設定 staff 參數，則顯示標籤並更新內容
     if (staff) {
-        // 使用 decodeURIComponent 確保中文顯示正常 [cite: 6, 11]
         const decodedStaff = decodeURIComponent(staff);
         document.getElementById('staff-container').style.display = 'block';
         document.getElementById('staff-name').innerText = decodedStaff;
     }
 
-    // 3. LINE 分享邏輯 [cite: 5, 11]
+    // 3. 整合後的 LINE 分享邏輯
     function shareToLine() {
-        const staffPrefix = staff ? `【${decodeURIComponent(staff)} 竭誠為您服務】\n` : "";
-        const shareText = `${staffPrefix}您好，這是鳳山據點的服務資訊與攜帶清單，請參考：\n${window.location.href}`;
+        const currentUrl = window.location.href;
         
-        // 使用 LINE URL Scheme 進行分享 
-        const lineUrl = `https://line.me/R/share?text=${encodeURIComponent(shareText)}`;
+        // 判斷是否顯示服務人員資訊
+        const staffHeader = staff ? `【${decodeURIComponent(staff)} 竭誠為您服務】\n` : "";
+        
+        // 組合您喜歡的備忘錄訊息格式
+        const message = 
+            staffHeader +
+            "【鳳山據點辦理備忘】\n" +
+            "📍 實際地點：鳳山區光復路二段120號3樓\n" +
+            "📦 應備文件：公文、印章、身分證、聽障證明、助聽器、調整報告、保固書、發票。\n\n" +
+            "🔗 詳細資訊與導航請點此：\n" +
+            currentUrl;
+
+        // 使用 LINE URL Scheme 進行分享
+        const lineUrl = `https://line.me/R/share?text=${encodeURIComponent(message)}`;
         window.location.href = lineUrl;
     }
 </script>
