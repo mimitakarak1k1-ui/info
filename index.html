@@ -4,65 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>鳳山據點辦理備忘錄</title>
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
-        body { font-family: sans-serif; padding: 20px; line-height: 1.6; color: #333; }
-        .card { border: 1px solid #ddd; border-radius: 8px; padding: 15px; background: #f9f9f9; }
-        h2 { color: #007bff; margin-top: 0; }
-        ul { padding-left: 20px; }
-        .btn { 
-            display: block; width: 100%; padding: 15px; margin-top: 20px;
-            background: #00B900; color: white; text-align: center;
-            text-decoration: none; border-radius: 5px; font-weight: bold; border: none;
+        :root { --line-green: #00B900; --bg-gray: #f8f9fa; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg-gray); padding: 20px; color: #333; }
+        .card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { color: #2c3e50; margin: 0 0 15px 0; font-size: 1.25rem; }
+        .info-row { margin-bottom: 12px; }
+        .label { font-weight: bold; color: #7f8c8d; font-size: 0.9rem; display: block; }
+        .content { font-size: 1.05rem; display: block; margin-top: 4px; }
+        .floor-alert { background: #fff5f5; color: #e74c3c; padding: 10px; border-radius: 8px; border-left: 5px solid #e74c3c; font-weight: bold; margin: 15px 0; }
+        
+        /* 導航按鈕樣式 */
+        .map-btn { 
+            display: inline-flex; align-items: center; justify-content: center;
+            background: #4285F4; color: white; text-decoration: none;
+            padding: 12px 20px; border-radius: 8px; width: 100%; box-sizing: border-box;
+            font-weight: bold; margin-top: 10px;
+        }
+        
+        /* LINE 分享按鈕樣式 */
+        .share-btn { 
+            display: block; width: 100%; background: var(--line-green); color: white;
+            text-align: center; padding: 18px; border-radius: 12px;
+            font-size: 1.1rem; font-weight: bold; border: none; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,185,0,0.3);
         }
     </style>
 </head>
 <body>
+
     <div class="card">
         <h2>高雄市北區輔具資源中心<br>鳳山據點</h2>
-        <p><strong>地址：</strong>高雄市鳳山區光復路二段120號1樓 (定位用)</p>
-        <p style="color: red;"><strong>實際位置：請至同址 3 樓</strong></p>
-        <hr>
-        <p><strong>請準備以下文件：</strong></p>
-        <ul>
-            <li>公文 / 身分證 / 聽障證明</li>
-            <li>印章 (簡易章亦可)</li>
-            <li>助聽器 / 調整報告 / 保固書 / 發票</li>
-        </ul>
+        
+        <div class="info-row">
+            <span class="label">地址</span>
+            <span class="content">鳳山區光復路二段120號</span>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=高雄市鳳山區光復路二段120號" class="map-btn">
+                📍 開啟地圖導航
+            </a>
+        </div>
+
+        <div class="floor-alert">
+            💡 抵達後請搭電梯至「3 樓」辦理
+        </div>
+
+        <div class="info-row">
+            <span class="label">應備文件 (共 8 項)</span>
+            <span class="content">
+                1. 公文 / 2. 印章 / 3. 身分證<br>
+                4. 聽障證明 / 5. 調整報告 / 6. 保固書<br>
+                7. 發票 / 8. 助聽器
+            </span>
+        </div>
     </div>
 
-    <button class="btn" onclick="sendShare()">將備忘傳送到我的LINE</button>
+    <button class="share-btn" onclick="sendShare()">將備忘傳送到我的 LINE</button>
 
     <script>
-        async function main() {
-            await liff.init({ liffId: "2009865912-MR7UrGpT" }); // 需在 LINE Developers 申請
-        }
-        main();
+        function sendShare() {
+            // 自動獲取當前網頁網址，方便客戶點回
+            const currentUrl = window.location.href;
+            
+            const message = 
+                "【鳳山據點辦理備忘】\n" +
+                "📍 實際地點：鳳山區光復路二段120號3樓\n" +
+                "📦 應備文件：公文、印章、身分證、聽障證明、助聽器、調整報告、保固書、發票。\n\n" +
+                "🔗 詳細資訊與導航請點此：\n" +
+                currentUrl;
 
-        async function sendShare() {
-            alert("按鈕已觸發！"); // 測試點擊是否有反應
-
-            if (liff.isApiAvailable('shareTargetPicker')) {
-                alert("權限檢查通過，準備開啟分享視窗");
-                try {
-                    const result = await liff.shareTargetPicker([
-                        {
-                            "type": "text",
-                            "text": "測試文字"
-                        }
-                    ]);
-                    if (result) {
-                        alert("分享成功！");
-                    } else {
-                        alert("使用者取消分享");
-                    }
-                } catch (error) {
-                    alert("發生錯誤：" + error.message);
-                }
-            } else {
-                alert("警告：shareTargetPicker 權限未開啟或環境不支援");
-            }
+            // 使用 URL Scheme 分享
+            const lineUrl = "https://line.me/R/share?text=" + encodeURIComponent(message);
+            window.location.href = lineUrl;
         }
     </script>
+
 </body>
 </html>
