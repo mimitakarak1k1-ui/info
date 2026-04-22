@@ -17,11 +17,13 @@
         }
         .container {
             max-width: 400px;
-            width: 100%;
+            width: 95%; /* 使用 95% 確保在極小螢幕左右仍有呼吸空間 */
             background: white;
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-sizing: border-box; /* 核心修正：防止 Padding 撐開寬度 */
+            margin: 20px auto; /* 置中並增加上下間距 */
         }
         h1 {
             font-size: 1.4rem;
@@ -55,7 +57,8 @@
         }
         .btn {
             display: block;
-            width: 100%;
+            width: 100%; /* 會填滿底板內部空間 */
+            box-sizing: border-box; /* 確保按鈕也不會超出 */
             padding: 15px;
             margin: 10px 0;
             text-align: center;
