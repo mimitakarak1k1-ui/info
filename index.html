@@ -40,13 +40,27 @@
         main();
 
         async function sendShare() {
+            alert("按鈕已觸發！"); // 測試點擊是否有反應
+
             if (liff.isApiAvailable('shareTargetPicker')) {
-                await liff.shareTargetPicker([
-                    {
-                        "type": "text",
-                        "text": "【鳳山據點辦理備忘】\n地址：鳳山區光復路二段120號3樓\n攜帶：公文、印章、身分證、聽障證明、助聽器、調整報告、保固書、發票。"
+                alert("權限檢查通過，準備開啟分享視窗");
+                try {
+                    const result = await liff.shareTargetPicker([
+                        {
+                            "type": "text",
+                            "text": "測試文字"
+                        }
+                    ]);
+                    if (result) {
+                        alert("分享成功！");
+                    } else {
+                        alert("使用者取消分享");
                     }
-                ]);
+                } catch (error) {
+                    alert("發生錯誤：" + error.message);
+                }
+            } else {
+                alert("警告：shareTargetPicker 權限未開啟或環境不支援");
             }
         }
     </script>
